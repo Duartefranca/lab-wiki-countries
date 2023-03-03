@@ -1,24 +1,33 @@
-import {useState} from 'react'
-import { Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Route, useParams, Link } from 'react-router-dom';
 
+function CountryDetails({ countries }) {
+    const { id } = useParams();
+    const [country] = countries.filter((el) => el.alpha3Code === id);
+  
+    return (
+      <div>                 
+         <img
+           src={`https://flagpedia.net/data/flags/icon/72x54/${country.alpha2Code.toLowerCase()}.png`}/>{' '}
+           <br />
+           <h1>{country.name.official}</h1>
 
-function CountryDetails(countriesData) {
-
-    const [countries, setCountries] = useState([]);
-
-  return (
-    <div>
-    <p>Country Details</p>
-    {countries.map((country) => {
-        return (
-          <div key={country._id} className="country">
-            <h3>{country.alpha3Code}</h3>
-          </div>
-        );
-      })}
-    </div>
-
-  )
-}
-
-export default CountryDetails
+           <br />
+                 
+           <h4>Capital: {country.capital[0]}</h4>        
+           <h4>Area: {country.area}</h4>
+           <h4>Borders
+                 {country.borders.map((border, i) => (
+                   <li>
+                     <Link to={`/country/${border}`}>{border}</Link>
+                   </li>
+                   ))}               
+            </h4>    
+           
+           <Link to="/">Countries List</Link>
+         
+      </div>
+    );
+  }
+  
+export default CountryDetails;
